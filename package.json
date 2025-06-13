@@ -2,6 +2,9 @@
   "name": "nodejs-basic-template-backend",
   "version": "1.0.0",
   "main": "index.js",
+  "bin": {
+    "create-node-boilerplate": "cli.js"
+  },
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
@@ -11,8 +14,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "degit": "^2.8.4",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "inquirer": "^8.2.6",
     "knex": "^3.1.0",
     "mysql2": "^3.14.1"
   },
