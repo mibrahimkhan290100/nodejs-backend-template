@@ -1,5 +1,7 @@
 const db = require("../utils/databases/db");
-
-async function RegisterUser(req, res) {}
+const {registerSchema} = require('../utils/validations/authValidator')
+async function RegisterUser(req, res) {
+    const {error , value} =     
+}
 
 module.exports = { RegisterUser };
