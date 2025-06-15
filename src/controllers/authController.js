@@ -25,7 +25,8 @@ async function RegisterUser(req, res) {
         });
     }
 
-    const password_hashed = passwordHash(password)
+    const password_hashed = await passwordHash(password);
+
 
     const [addUser] = await db('users').insert({
 
@@ -35,7 +36,10 @@ async function RegisterUser(req, res) {
 
     return res.status(201).json({
       status:true,
-      data:addUser,
+      data:{
+        id:addUser,
+        user:userData,
+      },
       message:"New User Registered Successfully"
     })
   } catch (err) {
