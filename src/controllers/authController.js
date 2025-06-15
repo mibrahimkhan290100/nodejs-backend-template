@@ -51,4 +51,8 @@ async function RegisterUser(req, res) {
   }
 }
 
+async function LoginUser(req , res) {
+  
+}
+
 module.exports = { RegisterUser };
