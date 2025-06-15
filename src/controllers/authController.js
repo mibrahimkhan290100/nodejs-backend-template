@@ -1,6 +1,7 @@
-const { passwordHash } = require("../utils/configs/hash");
+const { passwordHash, comparePassword } = require("../utils/configs/hash");
+const { createToken } = require("../utils/configs/token");
 const db = require("../utils/databases/db");
-const { registerSchema } = require("../utils/validations/authValidator");
+const { registerSchema, loginSchema } = require("../utils/validations/authValidator");
 async function RegisterUser(req, res) {
   const { error, value } = registerSchema.validate(req.body, {
     abortEarly: false,
@@ -52,7 +53,64 @@ async function RegisterUser(req, res) {
 }
 
 async function LoginUser(req , res) {
-  
+  const {error , value} = loginSchema.validate(req.body , {abortEarly:false});
+
+  if(error){
+    return res.status(400).json({
+      status:false,
+      message:"Vaildation failed",
+      errors:error.details.map(d => d.message)
+    })
+  }
+
+  const{password , email} = value
+
+  try{
+
+    const user = await db('users').where({email}).first();
+
+    if(!user){
+      return res.status(401).json({
+        status:false,
+        message:"User does Not exist"
+      })
+    }
+
+    const isMatch = await comparePassword(password , user.password);
+
+    if(!isMatch){
+      return res.status(401).json({
+        status:false,
+        message:"Password incorrect"
+      })
+    }
+
+    const token = await createToken({
+      id:user.id,
+      email:user.email
+    });
+
+    return res.status(200).json({
+      status:true,
+      data:{
+        id:user.id,
+        fullname:user.full_name,
+        email:user.email,
+      },
+      token : token,
+      message:"User Successfully login"
+    })
+
+  }catch(err){
+    return res.status(500).json({
+      status:false,
+      errors:err,
+      message:"Internal server error"
+    })
+  }
 }
 
-module.exports = { RegisterUser };
+async function LogoutUser(req ,res) {
+  
+}
+module.exports = { RegisterUser , LoginUser , LogoutUser };
