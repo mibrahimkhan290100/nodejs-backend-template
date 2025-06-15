@@ -1,6 +1,8 @@
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 
-const SALT_ROUNDS = 10;
+
+const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS , 10) || 10   ;
 
 async function passwordHash(password) {
     return await bcrypt.hash(password , SALT_ROUNDS);
