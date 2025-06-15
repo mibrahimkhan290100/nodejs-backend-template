@@ -43,9 +43,9 @@ async function RegisterUser(req, res) {
       message:"New User Registered Successfully"
     })
   } catch (err) {
-    console.log("Register Error:" , err);
     return res.status(500).json({
       status:false,
+      error:err,
       message:"Internal Server Error"
     })
   }
