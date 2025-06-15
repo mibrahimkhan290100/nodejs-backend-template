@@ -17,6 +17,6 @@ async function verifyToken(token) {
 }
 
 module.exports= {
-    createToken
+    createToken,
     verifyToken
 }
